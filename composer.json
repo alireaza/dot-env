@@ -1,6 +1,6 @@
 {
   "name": "alireaza/dot-env",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "library",
   "license": "MIT",
   "description": "This is DotEnv package.",

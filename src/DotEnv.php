@@ -129,7 +129,7 @@ class DotEnv
 
         $match = preg_match('/(export[ \t]++)?((?i:[A-Z][A-Z0-9_]*+))/A', $data, $matches);
 
-        if (!$match || ($matches[0] === 'export' && $matches[1] === '')) {
+        if (!$match || ($matches[0] === 'export' && $matches[1] === '') || $matches[0] !== $data) {
             throw $this->createLogicException('Invalid character in variable name: ' . $data);
         }
 
