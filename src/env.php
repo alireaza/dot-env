@@ -2,13 +2,6 @@
 
 use AliReaza\DotEnv\DotEnvBuilder;
 
-/**
- * @param string|null          $key
- * @param string|int|bool|null $default
- *
- * @return string|int|bool|null|array
- * @throws Throwable
- */
 function env(?string $key = null, string|int|null|bool $default = ''): string|int|null|bool|array
 {
     $env = DotEnvBuilder::getInstance();

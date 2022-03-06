@@ -5,24 +5,11 @@ namespace AliReaza\DotEnv;
 use Exception;
 use LogicException;
 
-/**
- * Class DotEnv
- *
- * @package AliReaza\DotEnv
- */
 class DotEnv
 {
     protected array $env = [];
     protected ?array $resolvers = null;
 
-    /**
-     * DotEnv constructor.
-     *
-     * @param string|null $file
-     * @param array|null  $resolvers
-     *
-     * @throws Exception
-     */
     public function __construct(string $file = null, array $resolvers = null)
     {
         $this->setResolvers($resolvers);
@@ -32,11 +19,6 @@ class DotEnv
         }
     }
 
-    /**
-     * @param string $file
-     *
-     * @throws Exception
-     */
     public function load(string $file): void
     {
         if (!is_readable($file) || is_dir($file)) {
@@ -48,9 +30,6 @@ class DotEnv
         $this->parse($data);
     }
 
-    /**
-     * @param string $data
-     */
     public function parse(string $data): void
     {
         $data = $this->normalizeLineEndings($data);
@@ -68,31 +47,16 @@ class DotEnv
         }
     }
 
-    /**
-     * @param string $data
-     *
-     * @return string
-     */
     public function normalizeLineEndings(string $data): string
     {
         return str_replace(["\r\n", "\r"], PHP_EOL, $data);
     }
 
-    /**
-     * @param string $data
-     *
-     * @return array
-     */
     public function linesToArray(string $data): array
     {
         return explode(PHP_EOL, $data);
     }
 
-    /**
-     * @param string $data
-     *
-     * @return bool
-     */
     public function lineSkip(string $data): bool
     {
         $data = trim($data);
@@ -100,11 +64,6 @@ class DotEnv
         return $data === '' || str_starts_with($data, '#');
     }
 
-    /**
-     * @param string $data
-     * @param        $key
-     * @param        $value
-     */
     public function parseLineToKeyValue(string $data, &$key, &$value): void
     {
         $array = explode('=', $data, 2);
@@ -116,11 +75,6 @@ class DotEnv
         [$key, $value] = $array;
     }
 
-    /**
-     * @param string $data
-     *
-     * @return string
-     */
     public function lexKey(string $data): string
     {
         if ($data !== rtrim($data)) {
@@ -136,11 +90,6 @@ class DotEnv
         return $matches[2];
     }
 
-    /**
-     * @param string $data
-     *
-     * @return string
-     */
     public function lexValue(string $data): string
     {
         if ($data !== ltrim($data)) {
@@ -159,11 +108,6 @@ class DotEnv
         return $data;
     }
 
-    /**
-     * @param string $data
-     *
-     * @return string
-     */
     public function trimQuotes(string $data): string
     {
         if (preg_match('/\A([\'"])(.*)\1\z/', $data, $matches)) {
@@ -173,56 +117,31 @@ class DotEnv
         return $data;
     }
 
-    /**
-     * @param array|null $resolvers
-     */
     public function setResolvers(?array $resolvers = null): void
     {
         $this->resolvers = $resolvers;
     }
 
-    /**
-     * @return array|null
-     */
     public function getResolvers(): ?array
     {
         return $this->resolvers;
     }
 
-    /**
-     * @param string $message
-     *
-     * @return LogicException
-     */
     public function createLogicException(string $message): LogicException
     {
         return new LogicException($message);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
     public function has(string $key): bool
     {
         return array_key_exists($key, $this->env);
     }
 
-    /**
-     * @param string $key
-     * @param string $default
-     *
-     * @return string
-     */
     public function get(string $key, string $default = ''): string
     {
         return $this->env[$key] ?? $default;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return $this->env;
